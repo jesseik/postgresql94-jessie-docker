@@ -18,6 +18,8 @@ ADD backup.sh /workdir/backup.sh
 
 # Copy PostgreSQL and Supervisor files
 ADD config/postgresql.conf /etc/postgresql/9.4/main/postgresql.conf
+ADD config/pg_hba.conf /etc/postgresql/9.4/main/pg_hba.conf
+
 ADD config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN cp -rf /etc/ssl/certs/ssl-cert-snakeoil.pem /workdir/ && \
     cp -rf /etc/ssl/private/ssl-cert-snakeoil.key /workdir/ && \
