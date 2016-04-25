@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y -t unstable libnss-wrapper
 
 # Install PostgreSQL packages
 RUN rm -rf /etc/apt/preferences.d/unstable.pref && rm -rf /etc/apt/sources.list.d/unstable.list
-RUN apt-get update && apt-get install -y postgresql-9.4 postgresql-client
+RUN apt-get update && apt-get install -y postgresql-9.4 postgresql-contrib-9.4 postgresql-client
 
 # Install additional requirements
 RUN apt-get install -y gettext supervisor
