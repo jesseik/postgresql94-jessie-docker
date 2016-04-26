@@ -30,15 +30,19 @@ RUN cp -rf /etc/ssl/certs/ssl-cert-snakeoil.pem /workdir/ && \
 # Create volume dir in case not mounted
 RUN mkdir -p /volume
 
+ENV HOME /home/
 RUN chmod 777 /workdir/passwd.template
 RUN chmod -R 777 /volume
 RUN chmod -R 777 /var/run/postgresql
 RUN chmod -R a+r /etc/postgresql/9.4/main
 RUN chmod a+x /workdir/entrypoint.sh
 RUN chmod a+x /workdir/backup.sh
+RUN chmod -R 777 /home/
 
-WORKDIR ["/workdir"]
+WORKDIR /workdir
 VOLUME ["/volume"]
+
+EXPOSE 5432
 USER 1000000
 
 ENTRYPOINT ["/workdir/entrypoint.sh"]

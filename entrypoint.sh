@@ -10,6 +10,11 @@ export NSS_WRAPPER_GROUP=/etc/group
 printenv > /tmp/environment.sh
 chmod a+x /tmp/environment.sh
 
+# Add nss-wrapper environment to bashrc
+echo "export LD_PRELOAD=libnss_wrapper.so" > /home/.bashrc
+echo "export NSS_WRAPPER_PASSWD=/tmp/passwd" >> /home/.bashrc
+echo "export NSS_WRAPPER_GROUP=/etc/group" >> /home/.bashrc
+
 # Check if variables have been set
 if [ -z ${POSTGRESQL_USER+x} ]; then
   echo "POSTGRESQL_USER must be set.";
@@ -37,6 +42,9 @@ if [ ! -d /volume/postgresql-data ]; then
   /usr/lib/postgresql/9.4/bin/createuser "$POSTGRESQL_USER"
   /usr/lib/postgresql/9.4/bin/createdb --owner="$POSTGRESQL_USER" "$POSTGRESQL_DATABASE"
   /usr/lib/postgresql/9.4/bin/psql --command "ALTER USER \"${POSTGRESQL_USER}\" WITH ENCRYPTED PASSWORD '${POSTGRESQL_PASSWORD}';"
+
+  # Add UUID generation module
+  /usr/lib/postgresql/9.4/bin/psql --command CREATE EXTENSION "uuid-ossp";
 
   /usr/lib/postgresql/9.4/bin/pg_ctl -D /volume/postgresql-data/ stop
 fi
