@@ -41,10 +41,10 @@ if [ ! -d /volume/postgresql-data ]; then
 
   /usr/lib/postgresql/9.4/bin/createuser "$POSTGRESQL_USER"
   /usr/lib/postgresql/9.4/bin/createdb --owner="$POSTGRESQL_USER" "$POSTGRESQL_DATABASE"
-  /usr/lib/postgresql/9.4/bin/psql -d "$POSTGRESQL_DATABASE" --command "ALTER USER \"${POSTGRESQL_USER}\" WITH ENCRYPTED PASSWORD '${POSTGRESQL_PASSWORD}';"
+  /usr/lib/postgresql/9.4/bin/psql --command "ALTER USER \"${POSTGRESQL_USER}\" WITH ENCRYPTED PASSWORD '${POSTGRESQL_PASSWORD}';"
 
   # Add UUID generation module
-  /usr/lib/postgresql/9.4/bin/psql --command "CREATE EXTENSION \"uuid-ossp\";"
+  /usr/lib/postgresql/9.4/bin/psql -d "$POSTGRESQL_DATABASE" --command "CREATE EXTENSION \"uuid-ossp\";"
 
   /usr/lib/postgresql/9.4/bin/pg_ctl -D /volume/postgresql-data/ stop
 fi
