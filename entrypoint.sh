@@ -45,6 +45,13 @@ if [ ! -d /volume/postgresql-data ]; then
 
   # Add UUID generation module
   /usr/lib/postgresql/9.4/bin/psql -d "$POSTGRESQL_DATABASE" --command "CREATE EXTENSION \"uuid-ossp\";"
+  if [ ! -z ${POSTGRESQL_EXTENSIONS+x} ]; then
+    IFS=';' read -ra EXTENSION <<< "${POSTGRESQL_EXTENSIONS}"
+    for i in "${EXTENSION[@]}"; do
+      echo "Creating extension ${i}"
+      /usr/lib/postgresql/9.4/bin/psql -d "$POSTGRESQL_DATABASE" --command "CREATE EXTENSION \"$i\";"
+    done
+  fi
 
   /usr/lib/postgresql/9.4/bin/pg_ctl -D /volume/postgresql-data/ stop
 fi
