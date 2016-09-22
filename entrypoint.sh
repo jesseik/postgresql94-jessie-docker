@@ -40,8 +40,9 @@ if [ ! -d /volume/postgresql-data ]; then
   /usr/lib/postgresql/9.4/bin/pg_ctl -D /volume/postgresql-data/ -w start -o "-h ''"
 
   /usr/lib/postgresql/9.4/bin/createuser "$POSTGRESQL_USER"
-  /usr/lib/postgresql/9.4/bin/createdb --owner="$POSTGRESQL_USER" "$POSTGRESQL_DATABASE"
+  /usr/lib/postgresql/9.4/bin/createdb --owner="$POSTGRESQL_USER" --encoding="UTF8" --template="template0" "$POSTGRESQL_DATABASE"
   /usr/lib/postgresql/9.4/bin/psql --command "ALTER USER \"${POSTGRESQL_USER}\" WITH ENCRYPTED PASSWORD '${POSTGRESQL_PASSWORD}';"
+  #/usr/lib/postgresql/9.4/bin/psql --command "ALTER USER \"${POSTGRESQL_USER}\" CREATEDB;"
 
   # Add UUID generation module
   /usr/lib/postgresql/9.4/bin/psql -d "$POSTGRESQL_DATABASE" --command "CREATE EXTENSION \"uuid-ossp\";"
